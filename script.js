@@ -250,6 +250,9 @@ function handleCheatingDetected() {
         document.getElementById('cheatingWarning').style.display = 'flex';
         showModal();
         
+        // Tambahkan efek visual pada timer
+        document.querySelector('.timer').classList.add('warning');
+        
         // Jika sudah 3 kali kecurangan, langsung kumpulkan
         if (examData.cheatingAttempts >= 3) {
             setTimeout(submitExam, 2000);
@@ -355,15 +358,19 @@ function startTimer() {
         timeLeft--;
         
         // Update tampilan timer
-        document.getElementById('timer').textContent = formatTime(timeLeft);
+        const timerElement = document.getElementById('timer');
+        timerElement.textContent = formatTime(timeLeft);
         
         // Update progress bar
         const progressPercent = (timeLeft / totalTime) * 100;
         document.getElementById('progress').style.width = `${progressPercent}%`;
         
-        // Ubah warna timer jika waktu hampir habis
+        // Ubah warna dan efek timer jika waktu hampir habis
         if (timeLeft <= 60) { // 1 menit terakhir
-            document.getElementById('timer').style.color = '#f44336';
+            timerElement.style.color = '#fff';
+            timerElement.parentElement.classList.add('warning');
+        } else if (timeLeft <= 300) { // 5 menit terakhir
+            timerElement.style.color = '#ff9800';
         }
         
         // Jika waktu habis, kumpulkan otomatis
@@ -372,6 +379,45 @@ function startTimer() {
             submitExam();
         }
     }, 1000);
+    
+    // Buat timer floating saat scroll
+    makeTimerSticky();
+}
+// Buat timer selalu terlihat saat scroll
+function makeTimerSticky() {
+    const timerElement = document.querySelector('.timer');
+    const examHeader = document.querySelector('.exam-header');
+    let isTimerFloating = false;
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 100 && !isTimerFloating) {
+            // Buat timer floating
+            timerElement.style.position = 'fixed';
+            timerElement.style.top = '10px';
+            timerElement.style.right = '20px';
+            timerElement.style.zIndex = '1000';
+            timerElement.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
+            timerElement.style.transform = 'scale(1.1)';
+            isTimerFloating = true;
+            
+            // Tambahkan padding di header agar konten tidak tertutup
+            examHeader.style.paddingBottom = '50px';
+        } else if (scrollTop <= 100 && isTimerFloating) {
+            // Kembalikan timer ke posisi semula
+            timerElement.style.position = 'relative';
+            timerElement.style.top = 'auto';
+            timerElement.style.right = 'auto';
+            timerElement.style.zIndex = 'auto';
+            timerElement.style.boxShadow = '0 4px 12px rgba(26, 35, 126, 0.2)';
+            timerElement.style.transform = 'scale(1)';
+            isTimerFloating = false;
+            
+            // Hapus padding tambahan
+            examHeader.style.paddingBottom = '15px';
+        }
+    });
 }
 
 // Format waktu dari detik ke MM:SS
@@ -612,16 +658,18 @@ function animateScoreCircle(score) {
     }
 }
 
-// Tampilkan soal yang salah
+// Tampilkan soal yang salah TANPA koreksi
 function displayWrongAnswers(wrongQuestions) {
     const container = document.getElementById('wrongAnswersContainer');
     const listContainer = container.querySelector('.wrong-answers-list');
     
     if (wrongQuestions.length === 0) {
         container.innerHTML = `
-            <h3><i class="fas fa-check-circle" style="color: #4CAF50;"></i> SELAMAT! SEMUA JAWABAN BENAR</h3>
-            <div class="motivation-message">
-                <p>Anda telah menjawab semua soal dengan benar. Pertahankan prestasi ini!</p>
+            <div class="success-message">
+                <h3><i class="fas fa-check-circle"></i> SELAMAT! SEMUA JAWABAN BENAR</h3>
+                <div class="motivation-message">
+                    <p>Anda telah menjawab semua soal dengan benar. Pertahankan prestasi ini!</p>
+                </div>
             </div>
         `;
         return;
@@ -634,7 +682,7 @@ function displayWrongAnswers(wrongQuestions) {
         itemElement.className = 'wrong-answer-item';
         itemElement.innerHTML = `
             <p><strong>Soal ${index + 1}:</strong> ${item.question}</p>
-            <p><strong>Koreksi:</strong> ${item.explanation}</p>
+            <p><i class="fas fa-exclamation-triangle"></i> <em>Jawaban Anda salah pada soal ini. Pelajari kembali materinya.</em></p>
         `;
         listContainer.appendChild(itemElement);
     });
