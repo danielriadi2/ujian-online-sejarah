@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Online Sejarah - Kerajaan Hindu-Budha</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Halaman Login -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-landmark"></i>
+                    <h1>SEKOLAH MENENGAH ATAS</h1>
+                    <h2>UJIAN ONLINE SEJARAH</h2>
+                    <p>Kerajaan Hindu-Budha di Indonesia</p>
+                </div>
+            </div>
+            
+            <div class="login-form">
+                <h3><i class="fas fa-user-circle"></i> MASUKKAN DATA DIRI</h3>
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label for="nama"><i class="fas fa-user"></i> NAMA LENGKAP</label>
+                        <input type="text" id="nama" required placeholder="Masukkan nama lengkap">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="kelas"><i class="fas fa-users"></i> PILIH KELAS</label>
+                        <select id="kelas" required>
+                            <option value="">-- Pilih Kelas --</option>
+                            <option value="10 Satu">10 Satu</option>
+                            <option value="10 Dua">10 Dua</option>
+                            <option value="10 Tiga">10 Tiga</option>
+                            <option value="10 Empat">10 Empat</option>
+                            <option value="11 Satu">11 Satu</option>
+                            <option value="11 Dua">11 Dua</option>
+                            <option value="11 Tiga">11 Tiga</option>
+                            <option value="12 Satu">12 Satu</option>
+                            <option value="12 Dua">12 Dua</option>
+                            <option value="12 Tiga">12 Tiga</option>
+                        </select>
+                    </div>
+                    
+                    <div class="exam-info">
+                        <h4><i class="fas fa-info-circle"></i> INFORMASI UJIAN</h4>
+                        <ul>
+                            <li><i class="far fa-clock"></i> Durasi: <strong>15 Menit</strong></li>
+                            <li><i class="fas fa-question-circle"></i> Jumlah Soal: <strong>10</strong></li>
+                            <li><i class="fas fa-book"></i> Materi: <strong>Kerajaan Hindu-Budha</strong></li>
+                            <li><i class="fas fa-exclamation-triangle"></i> Sistem akan mendeteksi kecurangan</li>
+                        </ul>
+                    </div>
+                    
+                    <button type="submit" class="btn-start">
+                        <i class="fas fa-play-circle"></i> MULAI UJIAN
+                    </button>
+                    
+                    <div class="warning-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <p><strong>PERINGATAN:</strong> Membuka tab baru atau keluar dari halaman ujian akan dicatat sebagai kecurangan dan ujian akan otomatis terkumpul.</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Halaman Ujian -->
+    <div id="examPage" class="page">
+        <div class="exam-header">
+            <div class="exam-info-bar">
+                <div class="student-info">
+                    <span><i class="fas fa-user"></i> <span id="displayNama">-</span></span>
+                    <span><i class="fas fa-users"></i> <span id="displayKelas">-</span></span>
+                </div>
+                
+                <div class="timer-container">
+                    <div class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer">15:00</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress" class="progress"></div>
+                    </div>
+                </div>
+                
+                <div class="question-counter">
+                    <i class="fas fa-list-ol"></i>
+                    <span>Soal: <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span></span>
+                </div>
+            </div>
+            
+            <div class="cheating-warning" id="cheatingWarning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>PERINGATAN KECURANGAN TERDETEKSI! Ujian akan otomatis terkumpul. Hubungi pengawas jika ini adalah kesalahan.</span>
+            </div>
+        </div>
+        
+        <div class="exam-container">
+            <div class="questions-container">
+                <!-- Soal akan di-generate oleh JavaScript -->
+            </div>
+            
+            <div class="navigation-controls">
+                <button id="prevBtn" class="btn-nav">
+                    <i class="fas fa-arrow-left"></i> Sebelumnya
+                </button>
+                
+                <div class="question-buttons">
+                    <!-- Tombol nomor soal akan di-generate -->
+                </div>
+                
+                <button id="nextBtn" class="btn-nav">
+                    Selanjutnya <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="submit-section">
+                <button id="submitBtn" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> KUMPULKAN UJIAN
+                </button>
+                <p class="submit-warning">
+                    <i class="fas fa-exclamation-circle"></i> Pastikan semua soal telah terjawab sebelum mengumpulkan
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Halaman Hasil -->
+    <div id="resultPage" class="page">
+        <div class="result-container">
+            <div class="result-header">
+                <div class="result-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h2>HASIL UJIAN SEJARAH</h2>
+                <p>Kerajaan Hindu-Budha di Indonesia</p>
+            </div>
+            
+            <div class="student-result-info">
+                <p><i class="fas fa-user"></i> <strong id="resultNama">-</strong></p>
+                <p><i class="fas fa-users"></i> Kelas <strong id="resultKelas">-</strong></p>
+                <p><i class="fas fa-clock"></i> Waktu Pengerjaan: <strong id="resultWaktu">-</strong></p>
+            </div>
+            
+            <div class="score-container">
+                <div class="score-circle">
+                    <svg width="150" height="150">
+                        <circle cx="75" cy="75" r="70" stroke="#e0e0e0" stroke-width="10" fill="none"></circle>
+                        <circle id="scoreCircle" cx="75" cy="75" r="70" stroke="#4CAF50" stroke-width="10" fill="none" 
+                                stroke-dasharray="440" stroke-dashoffset="440" transform="rotate(-90 75 75)"></circle>
+                    </svg>
+                    <div class="score-text">
+                        <span id="scoreValue">0</span>
+                        <small>/100</small>
+                    </div>
+                </div>
+                
+                <div class="score-details">
+                    <h3>RINCIAN NILAI</h3>
+                    <div class="detail-item">
+                        <span>Jumlah Soal</span>
+                        <span id="totalSoalResult">10</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Jawaban Benar</span>
+                        <span id="correctAnswers">0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Jawaban Salah</span>
+                        <span id="wrongAnswers">0</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Durasi</span>
+                        <span id="durationResult">0 menit</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wrong-answers-container" id="wrongAnswersContainer">
+                <h3><i class="fas fa-times-circle"></i> SOAL YANG PERLU DIPELAJARI KEMBALI</h3>
+                <div class="wrong-answers-list">
+                    <!-- Daftar soal salah akan ditampilkan di sini -->
+                </div>
+            </div>
+            
+            <div class="motivation-container">
+                <h3><i class="fas fa-heart"></i> PESAN MOTIVASI</h3>
+                <div class="motivation-message" id="motivationMessage">
+                    <!-- Pesan motivasi akan ditampilkan di sini -->
+                </div>
+            </div>
+            
+            <div class="result-actions">
+                <button id="restartBtn" class="btn-restart">
+                    <i class="fas fa-redo"></i> UJIAN LAGI
+                </button>
+                <div class="result-note">
+                    <p><i class="fas fa-info-circle"></i> Jawaban yang benar tidak ditampilkan untuk evaluasi mandiri. Diskusikan dengan guru jika ada pertanyaan.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Peringatan -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>PERINGATAN KECURANGAN TERDETEKSI</h3>
+            </div>
+            <div class="modal-body">
+                <p>Sistem mendeteksi bahwa Anda telah membuka tab baru atau keluar dari halaman ujian.</p>
+                <p><strong>Ujian Anda akan otomatis terkumpul.</strong></p>
+                <p>Jika ini adalah kesalahan, segera hubungi pengawas ujian.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalOkBtn" class="btn-modal">MENGERTI</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
